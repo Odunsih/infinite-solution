@@ -1,101 +1,138 @@
-import Image from "next/image";
+"use client";
+
+import Navbar from "@/components/Navbar";
+import Link from "next/link";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [formData, setFormData] = useState({
+    email: "",
+    name: "",
+    password: "",
+    role: "", // Ensure default role is an empty string
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  // Form submit handler
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate fields
+    if (!formData.email || !formData.name || !formData.password || !formData.role) {
+      toast.error("All fields are required!");
+      return;
+    }
+
+    try {
+      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
+      }
+
+      const data = await response.json();
+      toast.success(data.message || "Sign-up successful!");
+
+      // Reset form inputs
+      setFormData({
+        email: "",
+        name: "",
+        password: "",
+        role: "",
+      });
+    } catch (error) {
+      toast.error(error.message || "Unable to sign up");
+    }
+  };
+
+  // Input change handler
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <>
+      <ToastContainer />
+      <Navbar/>
+      <div>
+        <form className="w-[500px] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>
+          <h2 className="text-3xl m-10">Sign-Up</h2>
+
+          {/* Email Field */}
+          <label className="input input-bordered flex items-center gap-2 m-5">
+            <input
+              type="email"
+              className="grow text-2xl"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              // required
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          </label>
+
+          {/* Username Field */}
+          <label className="input input-bordered m-5 flex items-center gap-2">
+            <input
+              type="text"
+              className="grow text-2xl"
+              name="name"
+              placeholder="Username"
+              value={formData.name}
+              onChange={handleChange}
+              // required
+            />
+          </label>
+
+          {/* Password Field */}
+          <label className="input input-bordered m-5 flex items-center gap-2">
+            <input
+              type="password"
+              className="grow text-2xl"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              // required
+            />
+          </label>
+
+          {/* Role Dropdown */}
+          <label className="input input-bordered m-5 flex items-center gap-2">
+            <select
+              className="grow text-2xl"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              // required
+            >
+              <option value="" disabled>
+                Select Role
+              </option>
+              <option value="contractor">contractor</option>
+              <option value="client">client</option>
+            </select>
+          </label>
+
+          <button type="submit" className="btn btn-primary mt-4 ml-5 rounded-lg text-2xl  duration-700">
+            Sign Up
+          </button>
+        </form>
+        <p className="m-10 text-center text-2xl">
+          Already have an account? <Link className="text-purple-600 hover:text-3xl " href="/login">Login</Link>
+        </p>
+      </div>
+    </>
   );
 }

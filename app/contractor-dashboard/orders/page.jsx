@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 const Page = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [orders, setOrders] = useState([]); // State to hold orders
   const [loading, setLoading] = useState(true); // For handling loading state
 
@@ -17,7 +18,7 @@ const Page = () => {
         return;
       }
 
-      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/orders", {
+      const response = await fetch(`${BASE_URL}/mesh/api/orders`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -56,7 +57,7 @@ const Page = () => {
         return;
       }
 
-      const response = await fetch(`https://mesh-1-1.onrender.com/mesh/api/orders/${orderId}`, {
+      const response = await fetch(`${BASE_URL}/mesh/api/orders/${orderId}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -85,7 +86,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <ContractorNavbar />
       <div className="w-full">
         <h2 className="text-3xl m-5">Orders</h2>

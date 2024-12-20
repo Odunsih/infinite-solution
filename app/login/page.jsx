@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/Navbar";
 
 const Login = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({ email: "", password: "" });
   const router = useRouter();
 
@@ -29,7 +30,7 @@ const Login = () => {
     }
     localStorage.setItem("email", formData.email);
     try {
-      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/auth/login", {
+      const response = await fetch(`${BASE_URL}/mesh/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,11 +45,11 @@ const Login = () => {
       }
   
       const data = await response.json();
-      console.log("API Response:", data); // Log the full response for debugging
+      console.log("API Response:", data); 
   
-      // Extract and normalize the role
+     
       const role = data.data?.user?.role;
-      console.log("API Response:", role); // Log the full response for debugging
+      console.log("API Response:", role); 
   
       if (role === "contractor") {
         toast.success("Login successful!");
@@ -75,7 +76,7 @@ const Login = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <Navbar/>
       <form className="w-[500px] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>
         <h2 className="text-3xl m-10">Login</h2>

@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Page = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [quotes, setQuotes] = useState([]); // For storing quotes
   const [clientId, setClientId] = useState(""); // For storing the entered client ID
   const [loading, setLoading] = useState(false); // For handling loading state
@@ -37,7 +38,7 @@ const Page = () => {
         return;
       }
   
-      const response = await fetch(`https://mesh-1-1.onrender.com/mesh/api/quotes/${clientId}`, {
+      const response = await fetch(`${BASE_URL}/mesh/api/quotes/${clientId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -109,7 +110,7 @@ const Page = () => {
   
       console.log("Order Data to be sent:", orderData);
       console.log(accessToken)
-      const orderResponse = await fetch("https://mesh-1-1.onrender.com/mesh/api/orders", {
+      const orderResponse = await fetch(`${BASE_URL}/mesh/api/orders`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -122,20 +123,20 @@ const Page = () => {
         throw new Error("Failed to create order.");
       }
   
-      // Assuming the order creation response includes an orderId
+      
       const orderResult = await orderResponse.json();
       console.log(orderResult)
-      const orderId = orderResult.data.id; // Adjust this based on your actual API response structure
+      const orderId = orderResult.data.id; 
       console.log(orderId)
       // Create bill after order creation
       const billData = {
         orderId: orderId,
         amount: orderData.totalAmount,
-        dueDate: orderDetails.endDate, // assuming endDate is used as dueDate
-        description: orderDetails.description // assuming description is used here
+        dueDate: orderDetails.endDate, 
+        description: orderDetails.description 
       };
       console.log(billData)
-      const billResponse = await fetch("https://mesh-1-1.onrender.com/mesh/api/bills", { // Hypothetical endpoint
+      const billResponse = await fetch(`${BASE_URL}/mesh/api/bills`, { 
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -149,7 +150,7 @@ const Page = () => {
       }
   
       // Update quote status and details on the server (as before)
-      const updateQuoteResponse = await fetch(`https://mesh-1-1.onrender.com/mesh/api/quotes/${selectedQuoteId}`, {
+      const updateQuoteResponse = await fetch(`${BASE_URL}/mesh/api/quotes/${selectedQuoteId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -165,7 +166,6 @@ const Page = () => {
   
       if (!updateQuoteResponse.ok) {
         console.error("Failed to update quote status:", await updateQuoteResponse.text());
-        // You might want to handle this more gracefully, perhaps by alerting the user
       } else {
         console.log("Quote status updated successfully");
       }
@@ -200,7 +200,7 @@ const Page = () => {
 
       setIsUpdating(true); // Disable buttons while updating
 
-      const response = await fetch(`https://mesh-1-1.onrender.com/mesh/api/quotes/${quoteId}`, {
+      const response = await fetch(`${BASE_URL}/mesh/api/quotes/${quoteId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -234,7 +234,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <ContractorNavbar />
       <div className="w-full">
         {/* Input for Client ID */}
@@ -309,7 +309,7 @@ const Page = () => {
                 type="text" 
                 name="quoteId" 
                 value={selectedQuoteId ? selectedQuoteId : ''} 
-                readOnly // Make it read-only
+                readOnly 
                 required 
               /><br />
               <label>Start date</label>

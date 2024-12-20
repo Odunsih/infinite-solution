@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Page = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [startDate, setStartDate] = useState(""); // Start date for the report
   const [endDate, setEndDate] = useState(""); // End date for the report
   const [reports, setReports] = useState([]); // All generated reports
@@ -15,7 +16,7 @@ const Page = () => {
     fetchReports();
   }, []);
 
-  // Function to fetch all reports
+  // fetch all reports 
   const fetchReports = async () => {
     try {
       const accessToken = localStorage.getItem("access_token");
@@ -24,7 +25,7 @@ const Page = () => {
         return;
       }
 
-      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/reports", {
+      const response = await fetch(`${BASE_URL}/mesh/api/reports`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -37,7 +38,7 @@ const Page = () => {
       }
 
       const data = await response.json();
-      setReports(data.data || []); // Assuming reports are returned in 'data'
+      setReports(data.data || []); 
       toast.success("Reports fetched successfully!");
     } catch (error) {
       console.error("Error fetching reports:", error);
@@ -45,7 +46,7 @@ const Page = () => {
     }
   };
 
-  // Function to generate a new report
+  // generate a new report
   const generateReport = async (e) => {
     e.preventDefault();
 
@@ -62,7 +63,7 @@ const Page = () => {
         return;
       }
 
-      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/reports", {
+      const response = await fetch(`${BASE_URL}/mesh/api/reports`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -88,7 +89,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <ContractorNavbar />
       <div className="w-full p-5">
         <h2 className="text-3xl font-bold mb-5">Generate Revenue Report</h2>

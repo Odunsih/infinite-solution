@@ -31,7 +31,7 @@ const ContractorNavbar = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <div>
         <div className="navbar bg-base-100 flex py-3 flex-wrap justify-around">
           <div className="flex-1">

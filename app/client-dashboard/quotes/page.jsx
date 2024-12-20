@@ -6,8 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Page = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
     const [formData, setFormData] = useState({
-      clientId: "", // Initially empty, fetched later
+      clientId: "", 
       propertyDetails: "",
       additionalNotes: "",
       description: "",
@@ -53,7 +54,7 @@ const Page = () => {
           ...formData,
           clientId: parseInt(formData.clientId, 10) || 0 // Convert to number, default to 0 if NaN
         };
-        const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/quotes", {
+        const response = await fetch(`${BASE_URL}/mesh/api/quotes`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -95,7 +96,7 @@ const Page = () => {
   
       try {
         setLoadingQuotes(true);
-        const response = await fetch(`https://mesh-1-1.onrender.com/mesh/api/quotes/${numericClientId}`, {
+        const response = await fetch(`${BASE_URL}/mesh/api/quotes/${numericClientId}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -122,7 +123,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <ClientNavbar />
       <div className="w-full">
         <button className="btn" onClick={fetchQuotes}>

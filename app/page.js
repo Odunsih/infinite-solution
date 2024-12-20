@@ -7,11 +7,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({
     email: "",
     name: "",
     password: "",
-    role: "", // Ensure default role is an empty string
+    role: "", 
   });
 
   // Form submit handler
@@ -25,7 +26,7 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/auth/register", {
+      const response = await fetch(`${BASE_URL}/mesh/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +39,7 @@ export default function Home() {
       }
 
       const data = await response.json();
-      toast.success(data.message || "Sign-up successful!");
+      toast.success(data.message || "Sign-up successful!, Please login");
 
       // Reset form inputs
       setFormData({
@@ -63,7 +64,8 @@ export default function Home() {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+      theme="dark" />
       <Navbar/>
       <div>
         <form className="w-[500px] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>

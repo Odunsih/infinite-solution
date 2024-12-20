@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Page = () => {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingBill, setEditingBill] = useState(null);
@@ -24,7 +25,7 @@ const Page = () => {
         return;
       }
 
-      const response = await fetch("https://mesh-1-1.onrender.com/mesh/api/bills", {
+      const response = await fetch(`${BASE_URL}/mesh/api/bills`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -41,7 +42,7 @@ const Page = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching bills:", error);
-      toast.error(error.message || "Error fetching bills.");
+      toast.error(error.message || "Unable to fetch bills.");
       setLoading(false);
     }
   };
@@ -60,7 +61,7 @@ const Page = () => {
         return;
       }
 
-      const response = await fetch(`https://mesh-1-1.onrender.com/mesh/api/bills/${editingBill.id}`, {
+      const response = await fetch(`${BASE_URL}/mesh/api/bills/${editingBill.id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -102,7 +103,7 @@ const Page = () => {
           return;
         }
 
-        const response = await fetch(`https://mesh-1-1.onrender.com/mesh/api/bills/${billToDelete}`, {
+        const response = await fetch(`${BASE_URL}/mesh/api/bills/${billToDelete}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -118,7 +119,7 @@ const Page = () => {
         await fetchBills(); // Refresh bills after delete
       } catch (error) {
         console.error("Error deleting bill:", error);
-        toast.error(error.message || "Error deleting bill.");
+        toast.error(error.message || "Unable to delete bill.");
       } finally {
         setShowDeleteConfirmation(false);
         setBillToDelete(null);
@@ -128,7 +129,7 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <ContractorNavbar/>
       {showDeleteConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
@@ -158,14 +159,14 @@ const Page = () => {
                   type="button"
                   onClick={() => setShowDeleteConfirmation(false)}
                 >
-                  Cancel
+                  No
                 </button>
                 <button 
                   className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                   type="button"
                   onClick={confirmDelete}
                 >
-                  Confirm Delete
+                  Yes
                 </button>
               </div>
             </div>

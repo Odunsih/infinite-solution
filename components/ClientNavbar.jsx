@@ -41,13 +41,13 @@ const ClientNavbar = () => {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <div>
-        <div className="navbar bg-base-100 flex py-3 flex-wrap justify-around">
+        <div className="navbar bg-base-100 flex py-3 flex-wrap justify-around ">
           <div className="flex-1">
-            <a className="btn btn-ghost text-2xl">
-              <Link href="/client-dashboard">Infinite Solution</Link>
-            </a>
+            
+              <Link className="btn btn-ghost text-2xl" href="/client-dashboard">Infinite Solution</Link>
+           
           </div>
           <div className="flex py-3 flex-wrap justify-around">
             <div className="dropdown dropdown-end">

@@ -20,6 +20,12 @@ export default function Home() {
     e.preventDefault();
 
     // Validate fields
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 6 characters long!");
+      return;
+      
+    }
+    
     if (!formData.email || !formData.name || !formData.password || !formData.role) {
       toast.error("All fields are required!");
       return;
@@ -68,7 +74,7 @@ export default function Home() {
       theme="dark" />
       <Navbar/>
       <div>
-        <form className="w-[500px] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>
+        <form className="w-[100%] content-center justify-center m-auto sm:w-[100%] md:w-[500px]" onSubmit={handleSubmit}>
           <h2 className="text-3xl m-10">Sign-Up</h2>
 
           {/* Email Field */}

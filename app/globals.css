@@ -60,9 +60,10 @@ footer {
   footer {
     padding: 0.5rem;
     font-size: 0.875rem;
-  }
+    text-align: center;
+  } 
   
-  main {
+     main {
     margin-bottom: 3rem;
   }
 }

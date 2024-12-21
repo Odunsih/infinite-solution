@@ -78,7 +78,7 @@ const Login = () => {
     <>
       <ToastContainer theme="dark" />
       <Navbar/>
-      <form className="w-[500px] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>
+      <form className="w-[100%] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>
         <h2 className="text-3xl m-10">Login</h2>
 
         {/* Email Field */}

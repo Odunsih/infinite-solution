@@ -20,15 +20,16 @@ export default function Home() {
     e.preventDefault();
 
     // Validate fields
-    if (formData.password.length < 8) {
-      toast.error("Password must be at least 6 characters long!");
-      return;
-      
-    }
+
     
     if (!formData.email || !formData.name || !formData.password || !formData.role) {
       toast.error("All fields are required!");
       return;
+    }
+    if (formData.password.length < 8) {
+      toast.error("Password must be at least 6 characters long!");
+      return;
+      
     }
 
     try {

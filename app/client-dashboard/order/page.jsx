@@ -2,6 +2,7 @@
 
 import ClientNavbar from "@/components/ClientNavbar";
 import React, { useEffect, useState } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -110,6 +111,14 @@ const Page = () => {
   return (
     <div className="container mx-auto p-4">
       <ClientNavbar />
+            {loading && (
+                          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <InfinitySpin
+                              width="200"
+                              color="#4fa94d"
+                            />
+                          </div>
+                        )}
       <h1 className="text-2xl font-bold mb-4">Your Orders</h1>
       {loading ? (
         <p className="text-center">Loading orders...</p>

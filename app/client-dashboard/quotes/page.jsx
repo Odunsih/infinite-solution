@@ -2,6 +2,7 @@
 
 import ClientNavbar from "@/components/ClientNavbar";
 import React, { useState, useRef, useEffect } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,7 +16,7 @@ const Page = () => {
     });
   
     const [quotes, setQuotes] = useState([]); // Array to store quotes
-    const [loadingQuotes, setLoadingQuotes] = useState(false);
+    const [loading, setLoading] = useState(false);
     const modalRef = useRef(null);
   
     useEffect(() => {
@@ -95,7 +96,7 @@ const Page = () => {
       }
   
       try {
-        setLoadingQuotes(true);
+        setLoading(true);
         const response = await fetch(`${BASE_URL}/mesh/api/quotes/${numericClientId}`, {
           method: "GET",
           headers: {
@@ -117,7 +118,7 @@ const Page = () => {
       } catch (error) {
         toast.error(error.message || "Unable to fetch quotes.");
       } finally {
-        setLoadingQuotes(false);
+        setLoading(false);
       }
     };
 
@@ -125,16 +126,24 @@ const Page = () => {
     <>
       <ToastContainer theme="dark" />
       <ClientNavbar />
+            {loading && (
+                          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <InfinitySpin
+                              width="200"
+                              color="#4fa94d"
+                            />
+                          </div>
+                        )}
       <div className="w-full">
         <button className="btn" onClick={fetchQuotes}>
-          {loadingQuotes ? "Loading..." : "View Quotes"}
+          {loading ? "Loading..." : "View Quotes"}
         </button>
 
         {/* Modal for displaying quotes */}
         <dialog ref={modalRef} id="view_quotes_modal" className="modal">
           <div className="modal-box w-11/12 max-w-5xl">
             <h3 className="text-lg font-bold">Your Quotes</h3>
-            {loadingQuotes ? (
+            {loading ? (
               <p>Loading quotes...</p>
             ) : quotes.length > 0 ? (
               quotes.map((quote, index) => (
@@ -161,7 +170,7 @@ const Page = () => {
         {/* Form to create a quote */}
         <form onSubmit={handleSubmit} className="w-full text-lg m-auto justify-center flex flex-col">
           <h2 className="p-5 m-5 justify-center flex text-5xl">Create a Quote</h2>
-          <label className="form-control w-full">
+          <label className="form-control w-[95%]">
             <div className="label text-4xl m-5 mb-1">Property Details:</div>
             <input
               type="text"
@@ -173,7 +182,7 @@ const Page = () => {
               required
             />
           </label>
-          <label className="form-control w-full">
+          <label className="form-control w-[95%]">
             <div className="label text-4xl m-5 mb-1">Additional Notes:</div>
             <textarea
               name="additionalNotes"
@@ -183,7 +192,7 @@ const Page = () => {
               onChange={handleChange}
             />
           </label>
-          <label className="form-control w-full">
+          <label className="form-control w-[95%]">
             <div className="label text-4xl m-5 mb-1">Description:</div>
             <textarea
               name="description"

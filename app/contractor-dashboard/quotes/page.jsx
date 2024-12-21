@@ -2,6 +2,7 @@
 
 import ContractorNavbar from "@/components/ContractorNavbar";
 import React, { useEffect, useState } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -236,6 +237,14 @@ const Page = () => {
     <>
       <ToastContainer theme="dark" />
       <ContractorNavbar />
+            {loading && (
+                          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <InfinitySpin
+                              width="200"
+                              color="#4fa94d"
+                            />
+                          </div>
+                        )}
       <div className="w-full">
         {/* Input for Client ID */}
         <div className="mt-5 p-5">

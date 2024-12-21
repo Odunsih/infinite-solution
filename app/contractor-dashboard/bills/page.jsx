@@ -1,6 +1,7 @@
 "use client"
 import ContractorNavbar from '@/components/ContractorNavbar';
 import React, { useState, useEffect } from 'react';
+import { InfinitySpin } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -131,6 +132,14 @@ const Page = () => {
     <>
       <ToastContainer theme="dark" />
       <ContractorNavbar/>
+            {loading && (
+                          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <InfinitySpin
+                              width="200"
+                              color="#4fa94d"
+                            />
+                          </div>
+                        )}
       {showDeleteConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
           <div className="relative w-auto max-w-3xl mx-auto my-6">

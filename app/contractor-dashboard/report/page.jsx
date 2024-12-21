@@ -2,6 +2,7 @@
 
 import ContractorNavbar from "@/components/ContractorNavbar";
 import React, { useState, useEffect } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -105,6 +106,14 @@ const Page = () => {
     <>
       <ToastContainer theme="dark" />
       <ContractorNavbar />
+            {loading && (
+                          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                            <InfinitySpin
+                              width="200"
+                              color="#4fa94d"
+                            />
+                          </div>
+                        )}
       <div className="container mx-auto p-4">
         <h2 className="text-2xl font-bold mb-4">Generate Reports</h2>
         <form onSubmit={generateReport} className="flex flex-col gap-4 mb-8">

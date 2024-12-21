@@ -2,6 +2,7 @@
 
 import ContractorNavbar from "@/components/ContractorNavbar";
 import React, { useEffect, useState } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { toast, ToastContainer } from "react-toastify";
 
 const Page = () => {
@@ -15,6 +16,7 @@ const Page = () => {
       const accessToken = localStorage.getItem("access_token");
       if (!accessToken) {
         toast.error("Missing access token.");
+        setLoading(false);
         return;
       }
 
@@ -31,6 +33,7 @@ const Page = () => {
       }
 
       const data = await response.json();
+      setLoading(false);
       console.log("Orders Data:", data);
 
       // Update orders state
@@ -70,14 +73,21 @@ const Page = () => {
       });
 
       const responseData = await response.json();
+      setLoading(false);
 
       if (!response.ok) {
         console.error("Error Details:", responseData);
         throw new Error(responseData.message || "Failed to update order status.");
+        
       }
+      setLoading(false);
 
       toast.success(`Order #${orderId} updated to "${status}".`);
+      setLoading(false);
+
       await fetchOrders(); // Refetch orders to update the UI
+      setLoading(false);
+
     } catch (error) {
       console.error("Error updating order status:", error);
       toast.error(error.message || "Error updating order status.");
@@ -88,6 +98,14 @@ const Page = () => {
     <>
       <ToastContainer theme="dark" />
       <ContractorNavbar />
+      {loading && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                      <InfinitySpin
+                        width="200"
+                        color="#4fa94d"
+                      />
+                    </div>
+                  )}
       <div className="w-full">
         <h2 className="text-3xl m-5">Orders</h2>
         {loading ? (

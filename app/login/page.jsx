@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/Navbar";
+import { InfinitySpin } from "react-loader-spinner";
 
 const Login = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -22,10 +24,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
   
     // Validate fields
     if (!formData.email || !formData.password) {
       toast.error("Email and Password are required!");
+      setLoading(false);
       return;
     }
     localStorage.setItem("email", formData.email);
@@ -40,13 +44,14 @@ const Login = () => {
   
       if (!response.ok) {
         const errorData = await response.json();
+        setLoading(false);
         console.error("Error Data:", errorData);
         throw new Error(errorData.message || "Invalid login credentials");
       }
   
       const data = await response.json();
       console.log("API Response:", data); 
-  
+      setLoading(false);
      
       const role = data.data?.user?.role;
       console.log("API Response:", role); 
@@ -69,6 +74,8 @@ const Login = () => {
       }
     } catch (error) {
       toast.error(error.message || "Unable to login");
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -77,7 +84,15 @@ const Login = () => {
   return (
     <>
       <ToastContainer theme="dark" />
-      <Navbar/>
+      <Navbar />
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <InfinitySpin
+            width="200"
+            color="#4fa94d"
+          />
+        </div>
+      )}
       <form className="w-[100%] content-center justify-center m-auto sm:w-[95%] md:w-[500px]" onSubmit={handleSubmit}>
         <h2 className="text-3xl m-10">Login</h2>
 

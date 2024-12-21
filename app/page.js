@@ -3,11 +3,13 @@
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import React, { useState } from "react";
+import { InfinitySpin } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -18,6 +20,7 @@ export default function Home() {
   // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     // Validate fields
 
@@ -46,6 +49,7 @@ export default function Home() {
       }
 
       const data = await response.json();
+      setLoading(false);
       toast.success(data.message || "Sign-up successful!, Please login");
 
       // Reset form inputs
@@ -57,6 +61,8 @@ export default function Home() {
       });
     } catch (error) {
       toast.error(error.message || "Unable to sign up");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,6 +80,14 @@ export default function Home() {
       <ToastContainer
       theme="dark" />
       <Navbar/>
+            {loading && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <InfinitySpin
+                  width="200"
+                  color="#4fa94d"
+                />
+              </div>
+            )}
       <div>
         <form className="w-[100%] content-center justify-center m-auto sm:w-[100%] md:w-[500px]" onSubmit={handleSubmit}>
           <h2 className="text-3xl m-10">Sign-Up</h2>

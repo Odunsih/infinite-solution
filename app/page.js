@@ -20,7 +20,6 @@ export default function Home() {
   // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     // Validate fields
 
@@ -30,7 +29,7 @@ export default function Home() {
       return;
     }
     if (formData.password.length < 8) {
-      toast.error("Password must be at least 6 characters long!");
+      toast.error("Password must be at least 8 characters long!");
       return;
       
     }
